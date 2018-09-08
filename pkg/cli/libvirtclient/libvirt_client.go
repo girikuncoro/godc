@@ -54,19 +54,5 @@ func (lc *LibvirtClient) Domains() ([]libvirt.Domain, error) {
 		return nil, fmt.Errorf("failed to retrieve domains: %v", err)
 	}
 
-	for _, lll := range domains {
-		ll, _ := lc.libvirtc.DomainInterfaceAddresses(lll, 0, 0)
-		fmt.Println(ll)
-
-		l1, l2, l3, l4, l5, _ := lc.libvirtc.DomainGetInfo(lll)
-		fmt.Printf("stat: %d", l1)
-		fmt.Printf(" maxmem: %d", l2)
-		fmt.Printf(" mem: %d", l3)
-		fmt.Printf(" cpu: %d", l4)
-		fmt.Printf(" cputime: %d\n", l5)
-
-		lc.libvirtc.DomainGetXMLDesc(lll, lc.libvirtc.DomainDefineXMLFlags("interface"))
-	}
-
 	return domains, nil
 }
