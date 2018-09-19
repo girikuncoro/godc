@@ -12,6 +12,7 @@ import (
 type Libverter interface {
 	HostEndpoint() string
 	Domains() ([]libvirt.Domain, error)
+	Volumes(string, int) ([]string, error)
 }
 
 // LibvirtClient holds libvirt caller and host endpoint
@@ -55,4 +56,19 @@ func (lc *LibvirtClient) Domains() ([]libvirt.Domain, error) {
 	}
 
 	return domains, nil
+}
+
+// Volumes returns list of volumes from specified storage pool
+func (lc *LibvirtClient) Volumes(poolName string, maxList int) ([]string, error) {
+	storagePool, err := lc.libvirtc.StoragePool(poolName)
+	if err != nil {
+		return nil, fmt.Errorf("failed to retrieve storage pool: %v", err)
+	}
+
+	volumes, err := lc.libvirtc.StoragePoolListVolumes(storagePool, int32(maxList))
+	if err != nil {
+		return nil, fmt.Errorf("failed to retrieve volumes: %v", err)
+	}
+
+	return volumes, nil
 }
