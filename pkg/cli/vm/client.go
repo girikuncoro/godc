@@ -3,7 +3,7 @@ package vm
 import (
 	"fmt"
 
-	libvirtc "source.golabs.io/cloud-foundation/godc/pkg/cli/libvirtclient"
+	libvirtc "github.com/girikuncoro/godc/pkg/cli/libvirtclient"
 )
 
 // VmAPI interface
@@ -40,11 +40,11 @@ func NewVMClient(hostEndpoints []string) (VmAPI, error) {
 func (vc *vmClient) ListVms() error {
 	for _, lc := range vc.libvirtClients {
 		fmt.Printf("\nHost Endpoint: %s\n\n", lc.HostEndpoint())
-		fmt.Println("ID\tName\t\tUUID")
+		fmt.Println("ID\tName")
 		fmt.Printf("--------------------------------------------------------\n")
 		domains, _ := lc.Domains()
 		for _, d := range domains {
-			fmt.Printf("%d\t%s\t%x\n", d.ID, d.Name, d.UUID)
+			fmt.Printf("%d\t%s\n", d.ID, d.Name)
 		}
 		fmt.Printf("--------------------------------------------------------\n")
 	}

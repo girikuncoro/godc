@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"source.golabs.io/cloud-foundation/godc/pkg/cli/vm"
+	"github.com/girikuncoro/godc/pkg/cli/vm"
 )
 
 // listVmPre is prerunner of listVmCmd
