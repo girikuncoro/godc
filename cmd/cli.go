@@ -16,8 +16,9 @@ type Cli struct {
 
 	v *viper.Viper
 	// command hierarchy
-	rootCmd *cobra.Command
-	vmCmd   *vmCmd
+	rootCmd   *cobra.Command
+	vmCmd     *vmCmd
+	volumeCmd *volumeCmd
 
 	// list of <IP>:<port> of libvirt host
 	hostEndpoints []string
@@ -49,6 +50,7 @@ func NewCli() *Cli {
 	cli.v.BindPFlag(hostEndpointKey, cli.rootCmd.PersistentFlags().Lookup("host-endpoint"))
 
 	registerVMCmds(cli)
+	registerVolumeCmds(cli)
 
 	return cli
 }
