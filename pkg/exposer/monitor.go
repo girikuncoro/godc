@@ -1,14 +1,15 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"os/exec"
-
-	"github.com/kubernetes/pkg/kubelet/kubeletconfig/util/log"
+	"strings"
 )
 
+const runStatus = "active (running)"
+
 type Monitor interface {
-	Active()
+	Active() bool
 }
 
 type ServiceMonitor struct {
@@ -19,11 +20,13 @@ func NewServiceMonitor(serviceName string) Monitor {
 	return &ServiceMonitor{serviceName}
 }
 
-func (sm *ServiceMonitor) Active() {
+func (sm *ServiceMonitor) Active() bool {
 	cmd := exec.Command("systemctl", "status", sm.serviceName)
 	out, err := cmd.Output()
 	if err != nil {
-		log.Errorf("Error executing systemctl: %v", err)
+		log.Fatalf("Error executing systemctl: %v", err)
+		return false
 	}
-	fmt.Printf("%s\n\n", out)
+
+	return strings.Contains(string(out), runStatus)
 }
