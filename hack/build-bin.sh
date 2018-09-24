@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eo pipefail
 
-BINARY_NAME="godc"
+BINARY_NAME=$1
 
 # get parent directory of this script
 SOURCE="${BASH_SOURCE[0]}"

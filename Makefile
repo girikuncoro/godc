@@ -2,7 +2,11 @@ BASE = $(GOPATH)/src/github.com/girikuncoro/godc
 
 .PHONY: cli
 cli: ; $(info building cli...) @ ## Build cli
-	./hack/build-cli.sh
+	./hack/build-bin.sh godc
+
+.PHONY: exposure
+exposure: ; $(info building godc-exposure bin...) @ ## Build cli
+	./hack/build-bin.sh godc-exposure
 
 .PHONY: generate
 generate: ; $(info generating swagger server...) @ ## Generate swagger server
