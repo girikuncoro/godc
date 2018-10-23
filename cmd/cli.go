@@ -16,9 +16,10 @@ type Cli struct {
 
 	v *viper.Viper
 	// command hierarchy
-	rootCmd   *cobra.Command
-	vmCmd     *vmCmd
-	volumeCmd *volumeCmd
+	rootCmd    *cobra.Command
+	vmCmd      *vmCmd
+	volumeCmd  *volumeCmd
+	installCmd *installCmd
 
 	// list of <IP>:<port> of libvirt host
 	hostEndpoints []string
@@ -40,7 +41,7 @@ func NewCli() *Cli {
 
 	cli.rootCmd = &cobra.Command{
 		Use:   CliProgram,
-		Short: "GO-JEK Datacenter CLI",
+		Short: "Go Datacenter CLI",
 		RunE:  cli.usageRunner(),
 	}
 
@@ -51,6 +52,7 @@ func NewCli() *Cli {
 
 	registerVMCmds(cli)
 	registerVolumeCmds(cli)
+	registerInstallCmds(cli)
 
 	return cli
 }
