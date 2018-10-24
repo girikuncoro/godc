@@ -1,6 +1,8 @@
 package libvirt
 
 import (
+	"log"
+
 	libvirtxml "github.com/libvirt/libvirt-go-xml"
 )
 
@@ -77,4 +79,9 @@ func setConsoles(domainDef *libvirtxml.Domain) {
 		console.Target.Port = &port
 		domainDef.Devices.Consoles = append(domainDef.Devices.Consoles, console)
 	}
+}
+
+// setDisk configure domain with volume
+func setDisks(domainDef *libvirtxml.Domain) {
+	log.Println("setDisks currently not implemented")
 }

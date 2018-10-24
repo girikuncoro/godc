@@ -11,7 +11,7 @@ func registerVMCmds(c *Cli) {
 
 	vmCmd := &cobra.Command{
 		Use:   "vm",
-		Short: "VM related commands",
+		Short: "vm related commands",
 		RunE:  c.usageRunner(),
 	}
 
@@ -26,7 +26,7 @@ func registerVMCmds(c *Cli) {
 	createVmCmd := &cobra.Command{
 		Use:     "create",
 		Short:   "create vm",
-		Example: `godc vm create --host-endpoint HOST_ENDPOINT1 --name VM_NAME`,
+		Example: `godc vm create --host-endpoint HOST_ENDPOINT --name VM_NAME`,
 		PreRunE: c.preRunner(createVmPre),
 		RunE:    c.runner(createVmRun),
 	}
@@ -35,5 +35,5 @@ func registerVMCmds(c *Cli) {
 	vmCmd.AddCommand(createVmCmd)
 	c.rootCmd.AddCommand(vmCmd)
 
-	createVmCmd.Flags().StringVarP(&c.vmCmd.name, "name", "n", "", "VM name to be created")
+	createVmCmd.Flags().StringVarP(&c.vmCmd.name, "name", "n", "", "vm name to be created")
 }

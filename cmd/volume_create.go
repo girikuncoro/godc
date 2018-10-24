@@ -6,8 +6,8 @@ import (
 	"github.com/girikuncoro/godc/pkg/libvirt"
 )
 
-// createVmPre is prerunner of createVmCmd
-func createVmPre(c *Cli) error {
+// createVolumePre is prerunner of createVolumeCmd
+func createVolumePre(c *Cli) error {
 	// validate host endpoints
 	if len(c.hostEndpoints) != 1 {
 		return fmt.Errorf("Single hostEndpoint must be provided")
@@ -16,8 +16,8 @@ func createVmPre(c *Cli) error {
 	return nil
 }
 
-// createVmRun is runner of createVmCmd
-func createVmRun(c *Cli) error {
+// createVolumeRun is runner of createVolumeCmd
+func createVolumeRun(c *Cli) error {
 	config := libvirt.Config{
 		URI: c.hostEndpoints[0],
 	}
@@ -27,10 +27,9 @@ func createVmRun(c *Cli) error {
 		return err
 	}
 
-	err = libvirt.DomainCreate(client, c.vmCmd.name)
-	if err != nil {
-		return err
-	}
+	// TODO(giri): To be implemented with libvirt package
+	fmt.Println("Create volume is not implemented yet")
+	fmt.Printf("Client: +%v", client)
 
 	return nil
 }
