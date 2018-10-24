@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 
+	libvirt "github.com/libvirt/libvirt-go"
 	libvirtxml "github.com/libvirt/libvirt-go-xml"
 )
 
@@ -25,9 +26,47 @@ func newImage(source string) (image, error) {
 	}
 	if strings.HasPrefix(url.Scheme, "http") {
 		return &httpImage{url: url}, nil
-	} else {
-		return nil, fmt.Errorf("Not able to read from '%s': %s", url.String(), err)
 	}
+	return nil, fmt.Errorf("Not able to read from '%s': %s", url.String(), err)
+}
+
+func newCopier(virConn *libvirt.Connect, vol *libvirt.StorageVol, size uint64) func(src io.Reader) error {
+	copier := func(src io.Reader) error {
+		var bytesCopied int64
+
+		stream, err := virConn.NewStream(0)
+		if err != nil {
+			return err
+		}
+
+		defer func() {
+			if uint64(bytesCopied) != size {
+				stream.Abort()
+			} else {
+				stream.Finish()
+			}
+			stream.Free()
+		}()
+
+		if err := vol.Upload(stream, 0, size, 0); err != nil {
+			stream.Abort()
+			return fmt.Errorf("Error whilte uploading volume %s", err)
+		}
+
+		sio := NewStreamIO(*stream)
+
+		bytesCopied, err = io.Copy(sio, src)
+		// UnexpectedEOF means connection got closed suddenly
+		if err == io.ErrUnexpectedEOF {
+			return fmt.Errorf("Error downloading since server unexpectedly closed connetion")
+		}
+		if err != nil {
+			return fmt.Errorf("Error copying source to volume %s", err)
+		}
+		log.Printf("%d bytes uploaded\n", bytesCopied)
+		return nil
+	}
+	return copier
 }
 
 type httpImage struct {
