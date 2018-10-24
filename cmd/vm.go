@@ -2,7 +2,9 @@ package main
 
 import "github.com/spf13/cobra"
 
-type vmCmd struct{}
+type vmCmd struct {
+	name string
+}
 
 func registerVMCmds(c *Cli) {
 	c.vmCmd = &vmCmd{}
@@ -21,6 +23,17 @@ func registerVMCmds(c *Cli) {
 		RunE:    c.runner(listVmRun),
 	}
 
+	createVmCmd := &cobra.Command{
+		Use:     "create",
+		Short:   "create vm",
+		Example: `godc vm create --host-endpoint HOST_ENDPOINT1 --name VM_NAME`,
+		PreRunE: c.preRunner(createVmPre),
+		RunE:    c.runner(createVmRun),
+	}
+
 	vmCmd.AddCommand(listVmCmd)
+	vmCmd.AddCommand(createVmCmd)
 	c.rootCmd.AddCommand(vmCmd)
+
+	createVmCmd.Flags().StringVarP(&c.vmCmd.name, "name", "n", "", "VM name to be created")
 }
