@@ -56,3 +56,25 @@ func newDomainDef() libvirtxml.Domain {
 	domainDef.Type = "kvm"
 	return domainDef
 }
+
+// setConsoles hardcode console config of domain to serial and virtio
+func setConsoles(domainDef *libvirtxml.Domain) {
+	consoles := []libvirtxml.DomainConsole{
+		libvirtxml.DomainConsole{
+			Target: &libvirtxml.DomainConsoleTarget{
+				Type: "serial",
+			},
+		},
+		libvirtxml.DomainConsole{
+			Target: &libvirtxml.DomainConsoleTarget{
+				Type: "virtio",
+			},
+		},
+	}
+
+	for i, console := range consoles {
+		port := uint(i)
+		console.Target.Port = &port
+		domainDef.Devices.Consoles = append(domainDef.Devices.Consoles, console)
+	}
+}

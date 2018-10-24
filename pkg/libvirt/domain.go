@@ -15,6 +15,7 @@ func DomainCreate(client *Client, name string) error {
 
 	domainDef := newDomainDef()
 	domainDef.Name = name
+	setConsoles(&domainDef)
 
 	connectURI, err := virConn.GetURI()
 	if err != nil {
