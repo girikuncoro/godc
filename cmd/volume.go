@@ -4,6 +4,8 @@ import "github.com/spf13/cobra"
 
 type volumeCmd struct {
 	name string
+	// source is URL where base image from
+	source string
 }
 
 func registerVolumeCmds(c *Cli) {
@@ -36,4 +38,5 @@ func registerVolumeCmds(c *Cli) {
 	c.rootCmd.AddCommand(volumeCmd)
 
 	createVolumeCmd.Flags().StringVarP(&c.volumeCmd.name, "name", "n", "", "volume name to be created")
+	createVolumeCmd.Flags().StringVarP(&c.volumeCmd.source, "source", "s", "", "source url where base image from")
 }

@@ -8,9 +8,12 @@ import (
 
 // createVmPre is prerunner of createVmCmd
 func createVmPre(c *Cli) error {
-	// validate host endpoints
 	if len(c.hostEndpoints) != 1 {
-		return fmt.Errorf("Single hostEndpoint must be provided")
+		return fmt.Errorf("single hostendpoint must be provided")
+	}
+
+	if c.vmCmd.name == "" {
+		return fmt.Errorf("volume name must be provided")
 	}
 
 	return nil

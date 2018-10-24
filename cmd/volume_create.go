@@ -8,9 +8,16 @@ import (
 
 // createVolumePre is prerunner of createVolumeCmd
 func createVolumePre(c *Cli) error {
-	// validate host endpoints
 	if len(c.hostEndpoints) != 1 {
-		return fmt.Errorf("Single hostEndpoint must be provided")
+		return fmt.Errorf("single hostendpoint must be provided")
+	}
+
+	if c.volumeCmd.name == "" {
+		return fmt.Errorf("volume name must be provided")
+	}
+
+	if c.volumeCmd.source == "" {
+		return fmt.Errorf("volume source url must be provided")
 	}
 
 	return nil
@@ -27,9 +34,10 @@ func createVolumeRun(c *Cli) error {
 		return err
 	}
 
-	// TODO(giri): To be implemented with libvirt package
-	fmt.Println("Create volume is not implemented yet")
-	fmt.Printf("Client: +%v", client)
+	err = libvirt.VolumeCreate(client, c.volumeCmd.name, c.volumeCmd.source)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
