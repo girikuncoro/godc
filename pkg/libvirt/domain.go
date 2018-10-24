@@ -18,6 +18,10 @@ func DomainCreate(client *Client, name string) error {
 	domainDef.Name = name
 	setConsoles(&domainDef)
 
+	if err := setDisks(&domainDef, virConn, name); err != nil {
+		return err
+	}
+
 	connectURI, err := virConn.GetURI()
 	if err != nil {
 		return fmt.Errorf("Error retrieving libvirt connection URI: %s", err)

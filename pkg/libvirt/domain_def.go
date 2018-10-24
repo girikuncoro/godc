@@ -81,6 +81,23 @@ func setConsoles(domainDef *libvirtxml.Domain) {
 }
 
 // setDisk configure domain with volume
-func setDisks(domainDef *libvirtxml.Domain, virConn *libvirt.Connect) error {
+func setDisks(domainDef *libvirtxml.Domain, virConn *libvirt.Connect, volName string) error {
+	disk := newDefDisk(defaultDiskIndex)
+
+	// assume disk type is qcow2
+	disk.Driver = &libvirtxml.DomainDiskDriver{
+		Name: "qemu",
+		Type: "qcow2",
+	}
+
+	disk.Source = &libvirtxml.DomainDiskSource{
+		Volume: &libvirtxml.DomainDiskSourceVolume{
+			Pool:   defaultPoolName,
+			Volume: volName,
+		},
+	}
+
+	domainDef.Devices.Disks = append(domainDef.Devices.Disks, disk)
+
 	return nil
 }

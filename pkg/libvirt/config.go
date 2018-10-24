@@ -6,6 +6,12 @@ import (
 	libvirt "github.com/libvirt/libvirt-go"
 )
 
+const (
+	defaultPoolName = "default"
+	// assuming only one disk (boot disk) attached into vm
+	defaultDiskIndex = 0
+)
+
 // Config represents libvirt config
 type Config struct {
 	URI string
