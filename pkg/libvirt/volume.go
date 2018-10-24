@@ -9,6 +9,7 @@ const (
 	defaultPoolName = "default"
 )
 
+// VolumeCreate creates new volume
 func VolumeCreate(client *Client, name string, source string) error {
 	log.Printf("Libvirt volume create")
 

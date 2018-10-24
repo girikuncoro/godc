@@ -5,6 +5,7 @@ import (
 	"log"
 )
 
+// DomainCreate create new domain via libvirt
 func DomainCreate(client *Client, name string) error {
 	log.Printf("Libvirt domain create")
 
