@@ -16,5 +16,4 @@ generate: ; $(info generating swagger server...) @ ## Generate swagger server
 .PHONY: generate-kopral
 generate-kopral: ; $(info generating swagger server for kopral...) @ ## Kopral server
 	cd $(BASE) && swagger generate server \
-		-A Kopral -t ./pkg/kopral/gen -f $(BASE)/swagger/kopral.yaml \
-		--exclude-main
+		-A Kopral -t ./pkg/kopral/gen -f $(BASE)/swagger/kopral.yaml
