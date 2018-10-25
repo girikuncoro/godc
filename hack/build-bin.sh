@@ -2,6 +2,7 @@
 set -eo pipefail
 
 BINARY_NAME=$1
+PKG_DIR=$2
 
 # get parent directory of this script
 SOURCE="${BASH_SOURCE[0]}"
@@ -22,7 +23,7 @@ gox \
   -osarch="!darwin/arm" \
   -ldflags "${LDFLAGS}" \
   -output "dist/bin/${BINARY_NAME}-{{.OS}}-{{.Arch}}/${BINARY_NAME}" \
-  ./cmd/...
+  ./${PKG_DIR}/...
 
 echo "==> Results:"
 echo "==>./dist/bin"

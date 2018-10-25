@@ -1,4 +1,4 @@
-package kapten
+package main
 
 import (
 	"io"
@@ -11,13 +11,14 @@ import (
 	"github.com/spf13/viper"
 )
 
-var kaptenConfigPath = ""
+var godcConfigPath = ""
 
 // NewCLI creates cobra object for top-level kapten server
 func NewCLI(out io.Writer) *cobra.Command {
+	log.SetOutput(out)
 	cmd := &cobra.Command{
-		Use:   "kapten",
-		Short: "Kapten is server for GoDC datacenter and cluster management system",
+		Use:   "godc",
+		Short: "GoDC datacenter and cluster management system",
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			initConfig(cmd, defaultConfig)
 		},
@@ -26,28 +27,21 @@ func NewCLI(out io.Writer) *cobra.Command {
 
 	configGlobalFlags(cmd.PersistentFlags())
 
-	cmd.AddCommand(NewCmdLocal(out, defaultConfig))
-	cmd.AddCommand(NewCmdFunctions(out, defaultConfig))
-	cmd.AddCommand(NewCmdImages(out, defaultConfig))
-	cmd.AddCommand(NewCmdSecrets(out, defaultConfig))
-	cmd.AddCommand(NewCmdEvents(out, defaultConfig))
-	cmd.AddCommand(NewCmdAPIs(out, defaultConfig))
-	cmd.AddCommand(NewCmdIdentity(out, defaultConfig))
-	cmd.AddCommand(NewCmdServices(out, defaultConfig))
+	cmd.AddCommand(NewCmdKopral(out, defaultConfig))
 
 	return cmd
 }
 
-func initConfig(cmd *cobra.Command, targetConfig *kaptenConfig) {
+func initConfig(cmd *cobra.Command, targetConfig *godcConfig) {
 	v := viper.New()
 	configPath := os.Getenv("GODC_CONFIG")
 
-	if kaptenConfigPath != "" {
-		configPath = kaptenConfigPath
+	if godcConfigPath != "" {
+		configPath = godcConfigPath
 	}
 
 	if configPath != "" {
-		v.SetConfigFile(kaptenConfigPath)
+		v.SetConfigFile(godcConfigPath)
 		if err := v.ReadInConfig(); err != nil {
 			log.Fatalf("Unable to read the config file: %s", err)
 		}
@@ -61,4 +55,12 @@ func initConfig(cmd *cobra.Command, targetConfig *kaptenConfig) {
 	if err != nil {
 		log.Fatalf("Unable to create configuration: %s", err)
 	}
+}
+
+func main() {
+	cli := NewCLI(os.Stdout)
+	if err := cli.Execute(); err != nil {
+		os.Exit(1)
+	}
+	os.Exit(0)
 }

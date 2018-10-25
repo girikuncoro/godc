@@ -36,7 +36,6 @@ func configureAPI(api *operations.GodcAPI) http.Handler {
 	api.JSONProducer = runtime.JSONProducer()
 
 	api.ClusterGetClusterHandler = cluster.GetClusterHandlerFunc(func(params cluster.GetClusterParams) middleware.Responder {
-		mergedParams := cluster.NewGetClusterParams()
 		return middleware.NotImplemented("operation cluster.GetCluster has not yet been implemented")
 	})
 	api.VMGetVMHandler = vm.GetVMHandlerFunc(func(params vm.GetVMParams) middleware.Responder {
