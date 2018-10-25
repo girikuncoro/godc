@@ -56,3 +56,61 @@ func (o *GetNodeStatsOK) WriteResponse(rw http.ResponseWriter, producer runtime.
 		}
 	}
 }
+
+/*GetNodeStatsDefault Unexpected Error
+
+swagger:response getNodeStatsDefault
+*/
+type GetNodeStatsDefault struct {
+	_statusCode int
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewGetNodeStatsDefault creates GetNodeStatsDefault with default headers values
+func NewGetNodeStatsDefault(code int) *GetNodeStatsDefault {
+	if code <= 0 {
+		code = 500
+	}
+
+	return &GetNodeStatsDefault{
+		_statusCode: code,
+	}
+}
+
+// WithStatusCode adds the status to the get node stats default response
+func (o *GetNodeStatsDefault) WithStatusCode(code int) *GetNodeStatsDefault {
+	o._statusCode = code
+	return o
+}
+
+// SetStatusCode sets the status to the get node stats default response
+func (o *GetNodeStatsDefault) SetStatusCode(code int) {
+	o._statusCode = code
+}
+
+// WithPayload adds the payload to the get node stats default response
+func (o *GetNodeStatsDefault) WithPayload(payload *models.Error) *GetNodeStatsDefault {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get node stats default response
+func (o *GetNodeStatsDefault) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *GetNodeStatsDefault) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(o._statusCode)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}

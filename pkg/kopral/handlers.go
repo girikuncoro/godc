@@ -6,6 +6,7 @@ import (
 	"github.com/girikuncoro/godc/pkg/kopral/gen/models"
 	"github.com/girikuncoro/godc/pkg/kopral/gen/restapi/operations"
 	"github.com/girikuncoro/godc/pkg/kopral/gen/restapi/operations/kopral"
+	"github.com/girikuncoro/godc/pkg/kopral/metrics"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/swag"
 )
@@ -35,10 +36,15 @@ func (h *Handlers) ConfigureHandlers(routableAPI middleware.RoutableAPI) {
 }
 
 func (h *Handlers) getNodeStats(params kopral.GetNodeStatsParams) middleware.Responder {
-	// TODO(giri): collect proper node stats
+	metrics, err := metrics.Collect()
+	if err != nil {
+		return kopral.NewGetNodeStatsDefault(403).WithPayload(
+			&models.Error{Message: swag.String(err.Error())})
+	}
+
 	nodeStats := &models.NodeStats{
-		CPU:    swag.Int64(20),
-		Memory: swag.Int64(10),
+		CPU:    swag.Uint64(20),
+		Memory: swag.Uint64(metrics.Memory.Usage()),
 	}
 	return kopral.NewGetNodeStatsOK().WithPayload(nodeStats)
 }

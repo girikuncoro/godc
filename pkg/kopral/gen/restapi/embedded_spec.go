@@ -45,12 +45,33 @@ func init() {
             "schema": {
               "$ref": "#/definitions/NodeStats"
             }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
     }
   },
   "definitions": {
+    "Error": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
     "NodeStats": {
       "type": "object",
       "required": [
@@ -60,7 +81,7 @@ func init() {
       "properties": {
         "cpu": {
           "type": "integer",
-          "format": "int64"
+          "format": "uint64"
         },
         "id": {
           "type": "integer",
@@ -69,7 +90,7 @@ func init() {
         },
         "memory": {
           "type": "integer",
-          "format": "int64"
+          "format": "uint64"
         }
       }
     }
@@ -109,12 +130,33 @@ func init() {
             "schema": {
               "$ref": "#/definitions/NodeStats"
             }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
     }
   },
   "definitions": {
+    "Error": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
     "NodeStats": {
       "type": "object",
       "required": [
@@ -124,7 +166,7 @@ func init() {
       "properties": {
         "cpu": {
           "type": "integer",
-          "format": "int64"
+          "format": "uint64"
         },
         "id": {
           "type": "integer",
@@ -133,7 +175,7 @@ func init() {
         },
         "memory": {
           "type": "integer",
-          "format": "int64"
+          "format": "uint64"
         }
       }
     }

@@ -19,7 +19,7 @@ type NodeStats struct {
 
 	// cpu
 	// Required: true
-	CPU *int64 `json:"cpu"`
+	CPU *uint64 `json:"cpu"`
 
 	// id
 	// Read Only: true
@@ -27,7 +27,7 @@ type NodeStats struct {
 
 	// memory
 	// Required: true
-	Memory *int64 `json:"memory"`
+	Memory *uint64 `json:"memory"`
 }
 
 // Validate validates this node stats
