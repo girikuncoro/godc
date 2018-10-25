@@ -1,4 +1,4 @@
-# GoDC - Datacenter and Cluster anagement System
+# GoDC - Datacenter and Cluster Management System
 At the moment it's a simple CLI to gather VM info from host machines in datacenter, but in the future will manage and administer multiple datacenters.
 
 ## Dev Dependencies
