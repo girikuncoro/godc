@@ -1,7 +1,7 @@
 package kopral
 
 import (
-	"log"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/girikuncoro/godc/pkg/kopral/gen/models"
 	"github.com/girikuncoro/godc/pkg/kopral/gen/restapi/operations"

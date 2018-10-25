@@ -4,9 +4,9 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/girikuncoro/godc/gen/restapi"
-	"github.com/girikuncoro/godc/gen/restapi/operations"
 	"github.com/girikuncoro/godc/pkg/kopral"
+	"github.com/girikuncoro/godc/pkg/kopral/gen/restapi"
+	"github.com/girikuncoro/godc/pkg/kopral/gen/restapi/operations"
 	"github.com/go-openapi/loads"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -46,7 +46,7 @@ func initKopral(config *godcConfig) http.Handler {
 		log.Fatalln(err)
 	}
 
-	api := operations.NewGodcAPI(swaggerSpec)
+	api := operations.NewKopralAPI(swaggerSpec)
 
 	handlers := kopral.NewHandlers()
 	handlers.ConfigureHandlers(api)

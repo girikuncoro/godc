@@ -160,7 +160,8 @@ func (s *Server) Serve() (err error) {
 		httpServer.Handler = s.handler
 
 		wg.Add(2)
-		s.Logger.Infof("%s: serving HTTP traffic at http://%s", s.Name, s.httpListener.Addr())
+		// TODO(giri): pass logger from s.Logger instead
+		log.Infof("%s: serving HTTP traffic at http://%s", s.Name, s.httpListener.Addr())
 		go func(l net.Listener) {
 			defer wg.Done()
 			if err := httpServer.Serve(l); err != nil && err != http.ErrServerClosed {
