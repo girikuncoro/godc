@@ -19,9 +19,11 @@ type Cli struct {
 
 	v *viper.Viper
 	// command hierarchy
-	rootCmd    *cobra.Command
-	vmCmd      *vmCmd
-	volumeCmd  *volumeCmd
+	rootCmd   *cobra.Command
+	vmCmd     *vmCmd
+	volumeCmd *volumeCmd
+
+	getCmd     *getCmd
 	installCmd *installCmd
 }
 
@@ -51,8 +53,7 @@ func NewCli() *Cli {
 
 	cli.readConfig()
 
-	registerVMCmds(cli)
-	registerVolumeCmds(cli)
+	registerGetCmds(cli)
 	registerInstallCmds(cli)
 
 	return cli
