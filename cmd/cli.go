@@ -108,6 +108,12 @@ func (c *Cli) readConfig() {
 		os.Exit(1)
 	}
 
+	if _, err := os.Stat(path.Join(home, ".godc")); err != nil {
+		if os.IsNotExist(err) {
+			return
+		}
+	}
+
 	c.v.AddConfigPath(path.Join(home, ".godc"))
 	c.v.SetConfigName(configName)
 	err = c.v.ReadInConfig()
