@@ -9,7 +9,7 @@ import (
 	"github.com/ghodss/yaml"
 )
 
-type datacenterConfig struct {
+type DatacenterConfig struct {
 	Hosts      []string `json:"hosts,omitempty" validate:"required"`
 	DNSServer  string   `json:"dnsServer,omitempty" validate:"required"`
 	DHCPServer string   `json:"dhcpServer,omitempty" validate:"required"`
@@ -27,13 +27,13 @@ func readConfigFile(path string) ([]byte, error) {
 	return b, nil
 }
 
-func ParseDatacenterConfig(path string) (*datacenterConfig, error) {
+func ParseDatacenterConfig(path string) (*DatacenterConfig, error) {
 	b, err := readConfigFile(path)
 	if err != nil {
 		return nil, err
 	}
 
-	config := datacenterConfig{}
+	config := DatacenterConfig{}
 	err = yaml.Unmarshal(b, &config)
 	if err != nil {
 		return nil, fmt.Errorf("Error decoding yaml file: +%v", err)
@@ -41,7 +41,7 @@ func ParseDatacenterConfig(path string) (*datacenterConfig, error) {
 	return &config, nil
 }
 
-func WriteDatacenterConfig(configDir string, config *datacenterConfig) error {
+func WriteDatacenterConfig(configDir string, config *DatacenterConfig) error {
 	b, err := json.MarshalIndent(config, "", "    ")
 	if err != nil {
 		return fmt.Errorf("Error writing configuration: +%v", err)

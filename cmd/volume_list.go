@@ -10,7 +10,7 @@ import (
 // listVolumePre is prerunner of listVolumeCmd
 func listVolumePre(c *Cli) error {
 	// validate host endpoints
-	if len(c.hostEndpoints) == 0 {
+	if len(c.v.GetStringSlice(configKeyHosts)) == 0 {
 		return fmt.Errorf("Host endpoints are not provided")
 	}
 	return nil
@@ -18,7 +18,7 @@ func listVolumePre(c *Cli) error {
 
 // listVolumeRun is runner of listVolumeCmd
 func listVolumeRun(c *Cli) error {
-	vc, err := vm.NewVMClient(c.hostEndpoints)
+	vc, err := vm.NewVMClient(c.v.GetStringSlice(configKeyHosts))
 	if err != nil {
 		fmt.Printf("Listing vm error: %s", err.Error())
 		return err

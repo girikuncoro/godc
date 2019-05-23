@@ -2,7 +2,7 @@ BASE = $(GOPATH)/src/github.com/girikuncoro/godc
 
 .PHONY: cli
 cli: ; $(info building cli...) @ ## Build cli
-	./hack/build-bin.sh godctl cmd
+	./hack/build-bin.sh godc cmd
 
 .PHONY: exposure
 exposure: ; $(info building godc-exposure bin...) @ ## Build cli

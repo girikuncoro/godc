@@ -1,8 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"os"
+	"path"
 
+	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -20,16 +23,17 @@ type Cli struct {
 	vmCmd      *vmCmd
 	volumeCmd  *volumeCmd
 	installCmd *installCmd
-
-	// list of <IP>:<port> of libvirt host
-	hostEndpoints []string
 }
 
 const (
 	// CliProgram CLI program name
 	CliProgram = "godc"
-	// Environment Keys
-	hostEndpointKey = "HOST_ENDPOINT"
+	// configName is name of the config file
+	configName = "config"
+	// keys from config file
+	configKeyHosts      = "hosts"
+	configKeyDNSServer  = "dnsServer"
+	configKeyDHCPServer = "dnsServer"
 )
 
 // NewCli configures new CLI for GoDC.
@@ -41,14 +45,11 @@ func NewCli() *Cli {
 
 	cli.rootCmd = &cobra.Command{
 		Use:   CliProgram,
-		Short: "Go Datacenter CLI",
+		Short: "GOJEK Datacenter CLI",
 		RunE:  cli.usageRunner(),
 	}
 
-	cli.rootCmd.PersistentFlags().
-		StringArrayVar(&cli.hostEndpoints, "host-endpoint", cli.hostEndpoints, "Host Endpoint, [$HOST_ENDPOINT]")
-
-	cli.v.BindPFlag(hostEndpointKey, cli.rootCmd.PersistentFlags().Lookup("host-endpoint"))
+	cli.readConfig()
 
 	registerVMCmds(cli)
 	registerVolumeCmds(cli)
@@ -97,4 +98,21 @@ func (c *Cli) usageRunner() func(*cobra.Command, []string) error {
 	return c.runner(func(c *Cli) error {
 		return c.usage()
 	})
+}
+
+// readConfig reads godc config from file located in home directory
+func (c *Cli) readConfig() {
+	home, err := homedir.Dir()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	c.v.AddConfigPath(path.Join(home, ".godc"))
+	c.v.SetConfigName(configName)
+	err = c.v.ReadInConfig()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }

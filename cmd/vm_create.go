@@ -8,7 +8,7 @@ import (
 
 // createVmPre is prerunner of createVmCmd
 func createVmPre(c *Cli) error {
-	if len(c.hostEndpoints) != 1 {
+	if len(c.v.GetStringSlice(configKeyHosts)) != 1 {
 		return fmt.Errorf("single hostendpoint must be provided")
 	}
 
@@ -22,7 +22,7 @@ func createVmPre(c *Cli) error {
 // createVmRun is runner of createVmCmd
 func createVmRun(c *Cli) error {
 	config := libvirt.Config{
-		URI: c.hostEndpoints[0],
+		URI: c.v.GetStringSlice(configKeyHosts)[0],
 	}
 
 	client, err := config.Client()

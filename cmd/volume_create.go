@@ -8,7 +8,7 @@ import (
 
 // createVolumePre is prerunner of createVolumeCmd
 func createVolumePre(c *Cli) error {
-	if len(c.hostEndpoints) != 1 {
+	if len(c.v.GetStringSlice(configKeyHosts)) != 1 {
 		return fmt.Errorf("single hostendpoint must be provided")
 	}
 
@@ -26,7 +26,7 @@ func createVolumePre(c *Cli) error {
 // createVolumeRun is runner of createVolumeCmd
 func createVolumeRun(c *Cli) error {
 	config := libvirt.Config{
-		URI: c.hostEndpoints[0],
+		URI: c.v.GetStringSlice(configKeyHosts)[0],
 	}
 
 	client, err := config.Client()
