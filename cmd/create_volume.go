@@ -12,11 +12,11 @@ func createVolumePre(c *Cli) error {
 		return fmt.Errorf("single hostendpoint must be provided")
 	}
 
-	if c.volumeCmd.name == "" {
+	if c.createCmd.createVmCmd.name == "" {
 		return fmt.Errorf("volume name must be provided")
 	}
 
-	if c.volumeCmd.source == "" {
+	if c.createCmd.source == "" {
 		return fmt.Errorf("volume source url must be provided")
 	}
 
@@ -34,7 +34,7 @@ func createVolumeRun(c *Cli) error {
 		return err
 	}
 
-	err = libvirt.VolumeCreate(client, c.volumeCmd.name, c.volumeCmd.source)
+	err = libvirt.VolumeCreate(client, c.createCmd.createVolumeCmd.name, c.createCmd.createVolumeCmd.source)
 	if err != nil {
 		return err
 	}

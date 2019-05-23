@@ -2,9 +2,7 @@ package main
 
 import "github.com/spf13/cobra"
 
-type getCmd struct {
-	name string
-}
+type getCmd struct{}
 
 func registerGetCmds(c *Cli) {
 	c.getCmd = &getCmd{}
@@ -27,8 +25,8 @@ func registerGetCmds(c *Cli) {
 		Use:     "volume",
 		Short:   "get volume",
 		Example: `godc get volume`,
-		PreRunE: c.preRunner(getVmPre),
-		RunE:    c.runner(getVmRun),
+		PreRunE: c.preRunner(getVolumePre),
+		RunE:    c.runner(getVolumeRun),
 	}
 
 	getCmd.AddCommand(getVmCmd)

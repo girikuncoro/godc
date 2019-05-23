@@ -12,7 +12,7 @@ func createVmPre(c *Cli) error {
 		return fmt.Errorf("single hostendpoint must be provided")
 	}
 
-	if c.vmCmd.name == "" {
+	if c.createCmd.createVmCmd.name == "" {
 		return fmt.Errorf("volume name must be provided")
 	}
 
@@ -30,7 +30,7 @@ func createVmRun(c *Cli) error {
 		return err
 	}
 
-	err = libvirt.DomainCreate(client, c.vmCmd.name)
+	err = libvirt.DomainCreate(client, c.createCmd.createVmCmd.name)
 	if err != nil {
 		return err
 	}
