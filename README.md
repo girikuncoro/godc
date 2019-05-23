@@ -4,7 +4,7 @@ At the moment it's a simple CLI to gather VM info from host machines in datacent
 ## Quickstart
 Download the godc binary:
 ```bash
-wget https://github.com/girikuncoro/godc/releases/download/v0.3.0/godc-darwin-amd64
+wget https://github.com/girikuncoro/godc/releases/download/v0.3.1/godc-darwin-amd64
 mv godc-darwin-amd64 /usr/local/bin/godc
 chmod +x /usr/local/bin/godc
 ```
